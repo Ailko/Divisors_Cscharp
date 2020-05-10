@@ -10,7 +10,11 @@ namespace Divisibility_2._0
         static void Main(string[] args)
         {
             List<BigInteger> primes = ReadtxtBigIntegeroList();
-            List<BigInteger> primescop = primes;
+            List<BigInteger> primescop = new List<BigInteger>();
+            for(int i = 0; i < primes.Count; i++)
+            {
+                primescop.Add(primes[i]);
+            }
             BigInteger testfor = 1;
 
             while (testfor != 0)
@@ -227,8 +231,7 @@ namespace Divisibility_2._0
             {
                 totxt += $";{primes[i]}";
             }
-            File.AppendAllLines(@"res_divisibility/primes.txt", new[] { totxt });
-            //File.WriteAllText("res_divisibility/primes.txt", totxt);     //Write to file
+            File.AppendAllText("res_divisibility/primes.txt", totxt);
         }
 
         static bool IsPrime(BigInteger test, List<BigInteger> primes)

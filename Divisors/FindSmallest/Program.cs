@@ -185,9 +185,12 @@ namespace Divisibility_2._0
                 {
                     Console.WriteLine("1");
                 }
-                Console.WriteLine($"Tested combinations: {allpos.Count}");      //Display amount of possible solutions checked
-                Console.WriteLine($"Time to find: {end - start}");      //Display calculation time
-                Console.WriteLine("\n\n");
+                if (testfor != 0)
+                {
+                    Console.WriteLine($"Tested combinations: {allpos.Count}");      //Display amount of possible solutions checked
+                    Console.WriteLine($"Time to find: {end - start}");      //Display calculation time
+                    Console.WriteLine("\n\n");
+                }
             }
 
             SaveNewPrimes(primes, primescop);      //Put generated primes in file

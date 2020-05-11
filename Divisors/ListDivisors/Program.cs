@@ -243,7 +243,7 @@ namespace ListDivisors
 
         static List<BigInteger> AddPrimesUntil(List<BigInteger> primes, int wantedAmount)
         {
-            while (wantedAmount > primes.Count)     //Repeat Until Done
+            while (wantedAmount > primes[primes.Count - 1])     //Repeat Until Done
             {
                 BigInteger test = primes[primes.Count - 1];
                 bool found = false;
@@ -263,7 +263,7 @@ namespace ListDivisors
 
         static List<BigInteger> AddPrimesUntil(List<BigInteger> primes, BigInteger wantedAmount)
         {
-            while (wantedAmount > primes.Count)     //Repeat Until Done
+            while (wantedAmount > primes[primes.Count - 1])     //Repeat Until Done
             {
                 BigInteger test = primes[primes.Count - 1];
                 bool found = false;

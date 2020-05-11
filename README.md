@@ -7,4 +7,4 @@ Finds the smallest number with x divisors by using primes factorization.
 
 ## ListDivisors
 List the prime factorization and all the divisors of a given number
-- This too uses the "res-divisibility" folder and its conetents.
+- This too uses the "res-divisibility" folder and its contents.

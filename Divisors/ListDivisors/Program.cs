@@ -22,7 +22,7 @@ namespace ListDivisors
                 bool succeeded = false;
                 while (!succeeded)
                 {
-                    Console.WriteLine("Please enter your number.");
+                    Console.WriteLine("Please enter your number. (0 to exit)");
                     if (BigInteger.TryParse(Console.ReadLine(), out value))
                     {
                         succeeded = true;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using System.Threading;
 
 namespace Divisibility_2._0
 {
@@ -9,13 +10,10 @@ namespace Divisibility_2._0
     {
         static void Main(string[] args)
         {
-            List<BigInteger> primes = ReadtxtBigIntegeroList();
+            List<BigInteger> primes = new List<BigInteger>();
             List<BigInteger> primescop = new List<BigInteger>();
-            for(int i = 0; i < primes.Count; i++)
-            {
-                primescop.Add(primes[i]);
-            }
-            BigInteger testfor = 1;
+
+            BigInteger testfor = -1;
 
             while (testfor != 0)
             {
@@ -25,6 +23,13 @@ namespace Divisibility_2._0
                 testfor = BigInteger.Parse(Console.ReadLine());
                 DateTime start = DateTime.Now; //Start timer
                 BigInteger smallest = Power(2, testfor); //Largest smallest number possible as a solution is 2^(n-1)
+
+                primes = ReadtxtBigIntegeroList((testfor + 1) / 2);
+                primescop = new List<BigInteger>();
+                for (int i = 0; i < primes.Count; i++)
+                {
+                    primescop.Add(primes[i]);
+                }
 
                 //Primetest (if testfor is prime then smallest sollution = 2^(testfor-1)
                 bool isP = IsPrime(testfor, primes);
@@ -191,9 +196,8 @@ namespace Divisibility_2._0
                     Console.WriteLine($"Time to find: {end - start}");      //Display calculation time
                     Console.WriteLine("\n\n");
                 }
+                SaveNewPrimes(primes, primescop);      //Put generated primes in file
             }
-
-            SaveNewPrimes(primes, primescop);      //Put generated primes in file
         }
 
         static List<BigInteger> ReadtxtBigIntegeroList()
@@ -207,11 +211,11 @@ namespace Divisibility_2._0
                         Directory.CreateDirectory("res_divisibility");
                     }
                     File.Create("res_divisibility/primes.txt").Close();
-                    File.WriteAllText("res_divisibility/primes.txt", "2;3");       //Write 2 in file to prevent count = 0 errors in code
+                    File.WriteAllText("res_divisibility/primes.txt", "2\n3");       //Write 2 in file to prevent count = 0 errors in code
                 }
                 string primestxt = File.ReadAllText("res_divisibility/primes.txt");      //read file
                 string[] tempstrarr = new string[] { "" };      //create string array
-                tempstrarr = primestxt.Split(';');      //Split text from file into string array
+                tempstrarr = primestxt.Split('\n');      //Split text from file into string array
                 foreach (string prime in tempstrarr)     //parse all strings to ints 
                 {
                     BigInteger temp = new BigInteger();
@@ -224,17 +228,67 @@ namespace Divisibility_2._0
             return primes;
         }
 
+        static List<BigInteger> ReadtxtBigIntegeroList(BigInteger limit)
+        {
+            List<BigInteger> primes = new List<BigInteger>() {2, 3 };       //Create list
+            if (!File.Exists("res_divisibility/primes.txt"))     //Check if file exists
+            {
+                if (!Directory.Exists("res_divisibility"))       //Check if directory exists
+                {
+                    Directory.CreateDirectory("res_divisibility");
+                }
+                File.Create("res_divisibility/primes.txt").Close();
+                File.WriteAllText("res_divisibility/primes.txt", "2\n3");       //Write 2 in file to prevent count = 0 errors in code
+            }
+
+            string line = "";
+            StreamReader file = new StreamReader("res_divisibility/primes.txt");        //Read line by line until limit is found
+            if (limit > 3)
+            {
+                for (int i = 0; (line = file.ReadLine()) != null && primes[i] < limit; i++)
+                {
+                    if (line != "2" && line != "3")
+                    {
+                        primes.Add(BigInteger.Parse(line));
+                    }
+                }
+            }
+            file.Close();
+            return primes;
+        }
+
         static void SaveNewPrimes(List<BigInteger> primes, List<BigInteger> primescop)
         {
             Console.WriteLine("Saving, do not turn off the program.");
 
             string totxt = "";
 
-            for (int i = primescop.Count; i < primes.Count; i++)      //add rest of primes with separators
+            int countOld = 0;
+
+            string line = "";
+            StreamReader file = new StreamReader("res_divisibility/primes.txt");
+            while ((line = file.ReadLine()) != null)
             {
-                totxt += $";{primes[i]}";
+            countOld++;
             }
-            File.AppendAllText("res_divisibility/primes.txt", totxt);
+            file.Close();
+
+            for (int i = countOld + 2; i < primes.Count; i++)      //add rest of primes with separators
+            {
+                totxt += $"\n{primes[i]}";
+            }
+
+            bool success = false;
+
+            while (!success)
+            {
+                try
+                {
+                    File.AppendAllText("res_divisibility/primes.txt", totxt);
+                    success = true;
+                }
+                catch (Exception error) { }
+            }
         }
 
         static bool IsPrime(BigInteger test, List<BigInteger> primes)

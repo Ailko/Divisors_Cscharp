@@ -99,7 +99,7 @@ namespace Divisibility_2._0
                             count *= listpos.Count;
                         }
 
-                        List<List<BigInteger>> carryover = new List<List<BigInteger>>();    //Create carryover List
+                        List<List<BigInteger>> carryover = new List<List<BigInteger>>();    //Create 2D carryover List
                         for (int j = 0; j < count; j++)     //Create carryoverlist for each of the possible combinations
                         {
                             carryover.Add(new List<BigInteger>());
@@ -198,34 +198,6 @@ namespace Divisibility_2._0
                 }
                 SaveNewPrimes(primes, primescop);      //Put generated primes in file
             }
-        }
-
-        static List<BigInteger> ReadtxtBigIntegeroList()
-        {
-            List<BigInteger> primes = new List<BigInteger>();       //Create list
-            {
-                if (!File.Exists("res_divisibility/primes.txt"))     //Check if file exists
-                {
-                    if (!Directory.Exists("res_divisibility"))       //Check if directory exists
-                    {
-                        Directory.CreateDirectory("res_divisibility");
-                    }
-                    File.Create("res_divisibility/primes.txt").Close();
-                    File.WriteAllText("res_divisibility/primes.txt", "2\n3");       //Write 2 in file to prevent count = 0 errors in code
-                }
-                string primestxt = File.ReadAllText("res_divisibility/primes.txt");      //read file
-                string[] tempstrarr = new string[] { "" };      //create string array
-                tempstrarr = primestxt.Split('\n');      //Split text from file into string array
-                foreach (string prime in tempstrarr)     //parse all strings to ints 
-                {
-                    BigInteger temp = new BigInteger();
-                    if (BigInteger.TryParse(prime, out temp))
-                    {
-                        primes.Add(BigInteger.Parse(prime));
-                    }
-                }
-            }
-            return primes;
         }
 
         static List<BigInteger> ReadtxtBigIntegeroList(BigInteger limit)
